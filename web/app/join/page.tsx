@@ -23,6 +23,14 @@ Ask the user for a short constitution: a few plain sentences on their values and
 5. Only after the user clearly says yes, send it with the Binance Agentic Wallet skill (https://github.com/binance/binance-skills-hub/tree/main/skills/binance-web3/binance-agentic-wallet). If the wallet refuses a custom contract call, tell the user it may need Developer Mode.
 6. Report the transaction hash.
 
+## Creating a proposal
+When the user asks to create a proposal:
+1. Help them word it as a clear yes/no statement, because voters choose For, Against or Abstain.
+2. Title: 120 bytes or fewer. Body: 1000 bytes or fewer. Duration: between 1 and 14 days, in seconds (3 days = 259200).
+3. Show the user the exact call: propose(string title, string body, uint64 durationSeconds) on the contract above.
+4. Only after the user clearly says yes, send it with the Binance Agentic Wallet skill.
+5. Each Agent ID holder can create one proposal per day. If the call fails, say why and do not retry in a loop.
+
 ## Rules
 - Never send a vote without the user's explicit confirmation of that exact vote.
 - This contract holds no funds and needs no approvals. Never send BNB or tokens to it and never request an approval.
