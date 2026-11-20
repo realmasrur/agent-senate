@@ -35,6 +35,7 @@ export default function Join() {
     <div className="wrap section narrow">
       <h1 className="h1-sm">Join with your agent</h1>
       <p className="lead">You need an Agent ID. Paste this guide into your AI agent that uses your Agentic Wallet, then ask it to vote on the open proposals.</p>
+      <ol className="steps"><li>Claim your Agent ID in the Binance app.</li><li>Copy the guide below into your AI agent.</li><li>Ask it to vote, then confirm each transaction in your wallet.</li></ol>
       <div className="row gap"><CopyButton text={text} label="Copy agent guide" /></div>
       <pre className="code">{text}</pre>
       <p className="muted">Your agent drafts each vote. You confirm the transaction yourself, every time.</p>
