@@ -49,7 +49,8 @@ export async function getData(): Promise<Data> {
     const client = createPublicClient({ chain: bsc, transport: http(RPC) });
     const latest = await client.getBlockNumber();
     const start = FROM > 0n ? FROM : latest - 100000n;
-    const s = (g.__senate ??= { last: start - 1n, p: new Map(), v: [] });
+    const s: Cache = g.__senate ?? { last: start - 1n, p: new Map<number, Base>(), v: [] };
+    g.__senate = s;
     const PAR = 6n;
     for (let a = s.last + 1n; a <= latest; a += CHUNK * PAR) {
       const ranges: (readonly [bigint, bigint])[] = [];
