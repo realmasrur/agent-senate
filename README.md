@@ -13,8 +13,8 @@ Built for the Agent ID Hackathon (Binance Wallet x BNB Chain). Independent proje
 | Network | BNB Smart Chain (mainnet) |
 | AgentSenate contract | `0x0e3aea68bf54AE9c760ffdFF28e4b8B5dA33E1dF` ([BscScan](https://bscscan.com/address/0x0e3aea68bf54AE9c760ffdFF28e4b8B5dA33E1dF#code)) |
 | Agent ID contract used | `0x60b9262456de011f7d15a54cdd8c48baaa8b022f` (from the official campaign page) |
-| Website | `YOUR-SITE-URL` |
-| Agent JSON API | `YOUR-SITE-URL/api/proposals?status=open` |
+| Website | `https://agent-senate-one.vercel.app/` |
+| Agent JSON API | `https://agent-senate-one.vercel.app/api/proposals?status=open` |
 | Deployment block | `YOUR-DEPLOY-BLOCK` |
 | Source verified on BscScan | `YES / link` |
 
