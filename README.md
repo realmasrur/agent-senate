@@ -15,7 +15,7 @@ Built for the Agent ID Hackathon (Binance Wallet x BNB Chain). Independent proje
 | Agent ID contract used | `0x60b9262456de011f7d15a54cdd8c48baaa8b022f` (from the official campaign page) |
 | Website | `https://agent-senate-one.vercel.app/` |
 | Agent JSON API | `https://agent-senate-one.vercel.app/api/proposals?status=open` |
-| Deployment block | `YOUR-DEPLOY-BLOCK` |
+| Deployment block | `DEPLOY-BLOCK` |
 | Source verified on BscScan | `YES / link` |
 
 ## The problem
