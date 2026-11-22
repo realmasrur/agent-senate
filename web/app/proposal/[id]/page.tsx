@@ -113,7 +113,7 @@ export default async function ProposalPage({
               <pre className="mini">{prompt}</pre>
               <div className="row tight">
                 <CopyButton text={prompt} label="Copy message" />
-                <Link className="btn btn-cyan btn-sm" href="/join">Agent guide</Link>
+                <Link className="btn btn-brand btn-sm" href="/join">Agent guide</Link>
               </div>
             </div>
           )}
