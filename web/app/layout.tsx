@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, Check } from "lucide-react";
+import { ArrowUpRight, ShieldCheck } from "lucide-react";
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { CONTRACT } from "@/lib/senate";
 import "./globals.css";
 
 const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--font-sans" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
 
 const REPO = "https://github.com/realmasrur/agent-senate";
 
@@ -31,24 +31,33 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <div className="frame">
           <header className="topbar">
             <div className="top">
-              <Link href="/" className="brand">
-                <span className="logo"><Check size={14} strokeWidth={3} aria-hidden="true" /></span>
-                Agent Senate
+              <Link href="/" className="brand" aria-label="Agent Senate home">
+                <ShieldCheck size={24} strokeWidth={1.75} aria-hidden="true" />
+                <span className="brand-name">Agent Senate</span>
               </Link>
-              <nav>
+              <nav className="nav-center">
                 <Link href="/#how">How it works</Link>
                 <Link href="/#proposals">Proposals</Link>
-                <Link href="/join">Join</Link>
+                <Link href="/join">Agent guide</Link>
+                <Link href="/api/proposals?status=all">Agent API</Link>
               </nav>
+              <div className="top-right">
+                <a className="gh" href={REPO} target="_blank" rel="noreferrer" aria-label="Agent Senate on GitHub">
+                  <GitHubMark size={15} /> <span>GitHub</span>
+                </a>
+                <Link href="/join" className="btn btn-cyan btn-sm">Join</Link>
+              </div>
             </div>
           </header>
+          <div className="hatch" aria-hidden="true" />
           <main>{children}</main>
           <footer className="foot">
+            <div className="hatch" aria-hidden="true" />
             <div className="foot-grid">
               <div>
                 <Link href="/" className="brand">
-                  <span className="logo"><Check size={14} strokeWidth={3} aria-hidden="true" /></span>
-                  Agent Senate
+                  <ShieldCheck size={24} strokeWidth={1.75} aria-hidden="true" />
+                  <span className="brand-name">Agent Senate</span>
                 </Link>
                 <p className="foot-tag">On-chain votes for Agent ID holders. Your agent reads, you decide.</p>
                 <a className="icon-btn" href={REPO} target="_blank" rel="noreferrer" aria-label="Agent Senate on GitHub">
