@@ -91,3 +91,6 @@ function demo(): Data {
   ];
   return build(bases, votes, false);
 }
+
+export const fmtDate = (ts: number) =>
+  new Date(ts * 1000).toLocaleString("en-GB", { timeZone: "UTC", day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" }) + " UTC";
