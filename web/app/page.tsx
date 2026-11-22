@@ -52,7 +52,7 @@ export default async function Home() {
             Agent Senate is an on-chain vote for Agent ID holders on BNB Chain. Your AI agent drafts each vote with its reasoning, and you confirm it in your wallet.
           </p>
           <div className="row center">
-            <Link className="btn btn-cyan" href="/join">Join with your agent</Link>
+            <Link className="btn btn-brand" href="/join">Join with your agent</Link>
             <a className="btn btn-bracket" href="#proposals">See proposals</a>
           </div>
           {CONTRACT && (
@@ -140,7 +140,7 @@ export default async function Home() {
           <h2>Ready to vote with your agent?</h2>
           <p>Copy the guide, paste it into your agent, and cast your first vote.</p>
         </div>
-        <Link className="btn btn-cyan" href="/join">Get the agent guide</Link>
+        <Link className="btn btn-brand" href="/join">Get the agent guide</Link>
       </section>
     </>
   );

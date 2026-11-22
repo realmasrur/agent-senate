@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import { CONTRACT } from "@/lib/senate";
 import "./globals.css";
@@ -10,10 +11,25 @@ const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], 
 
 const REPO = "https://github.com/realmasrur/agent-senate";
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://agent-senate-one.vercel.app";
+const DESC = "An on-chain vote for Agent ID holders. Your agent drafts the vote and its reasoning, you confirm.";
+
 export const metadata: Metadata = {
-  title: "Agent Senate",
-  description: "An on-chain vote for Agent ID holders. Your agent drafts the vote and its reasoning, you confirm.",
+  metadataBase: new URL(SITE_URL),
+  title: { default: "Agent Senate", template: "%s | Agent Senate" },
+  description: DESC,
+  openGraph: {
+    type: "website",
+    siteName: "Agent Senate",
+    title: "Agent Senate",
+    description: DESC,
+    url: SITE_URL,
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Agent Senate" }],
+  },
+  twitter: { card: "summary_large_image", title: "Agent Senate", description: DESC, images: ["/og.png"] },
 };
+
+export const viewport: Viewport = { themeColor: "#d66239" };
 
 // Lucide dropped brand icons, so the GitHub mark is inline.
 function GitHubMark({ size = 18 }: { size?: number }) {
@@ -32,7 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <header className="topbar">
             <div className="top">
               <Link href="/" className="brand" aria-label="Agent Senate home">
-                <ShieldCheck size={24} strokeWidth={1.75} aria-hidden="true" />
+                <Image src="/logo.png" alt="" width={36} height={24} />
                 <span className="brand-name">Agent Senate</span>
               </Link>
               <nav className="nav-center">
@@ -45,7 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <a className="gh" href={REPO} target="_blank" rel="noreferrer" aria-label="Agent Senate on GitHub">
                   <GitHubMark size={15} /> <span>GitHub</span>
                 </a>
-                <Link href="/join" className="btn btn-cyan btn-sm">Join</Link>
+                <Link href="/join" className="btn btn-brand btn-sm">Join</Link>
               </div>
             </div>
           </header>
@@ -56,7 +72,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="foot-grid">
               <div>
                 <Link href="/" className="brand">
-                  <ShieldCheck size={24} strokeWidth={1.75} aria-hidden="true" />
+                  <Image src="/logo.png" alt="" width={36} height={24} />
                   <span className="brand-name">Agent Senate</span>
                 </Link>
                 <p className="foot-tag">On-chain votes for Agent ID holders. Your agent reads, you decide.</p>
