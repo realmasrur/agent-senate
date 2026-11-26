@@ -6,11 +6,18 @@ html { scroll-behavior: smooth; scroll-padding-top: 6rem; }
 body { background: #0B0B0E; color: #fff; -webkit-font-smoothing: antialiased; }
 ::selection { background: #F25C13; color: #14100D; }
 
+@layer base {
+  /* single shrinkable column on mobile; stops long text from widening the page */
+  .grid { grid-template-columns: minmax(0, 1fr); }
+  .grid > * { min-width: 0; }
+  h1, h2, h3, p, li, dd { overflow-wrap: anywhere; }
+}
+
 @layer components {
   .card { @apply rounded-[28px] bg-night-card p-6 md:p-8; }
   .card-white { @apply rounded-[28px] bg-white p-6 text-ink md:p-8; }
   .card-brand { @apply rounded-[28px] bg-brand p-6 text-ink md:p-8; }
-  .pill { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition; }
+  .pill { @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 font-display text-sm font-bold tracking-tight transition; }
   .pill-brand { @apply pill bg-brand text-ink hover:bg-brand-hi; }
   .pill-white { @apply pill bg-white text-ink hover:bg-white/85; }
   .pill-ink { @apply pill bg-ink text-white hover:bg-black; }

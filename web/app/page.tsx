@@ -117,7 +117,7 @@ export default async function Home() {
             ? recent.map((v, i) => (
                 <div key={i} className="mb-3">
                   <div className="flex items-baseline gap-2"><span>#{v.id} {short(v.voter)}</span><i className="flex-1 border-b border-dotted border-white/25" /><b className={v.choice === 1 ? "text-emerald-400" : v.choice === 0 ? "text-red-400" : ""}>{CHOICES[v.choice]}</b></div>
-                  <p className="truncate text-white/45">{v.reasoning}</p>
+                  <p className="mt-1 line-clamp-2 text-white/45">{v.reasoning}</p>
                 </div>
               ))
             : guarantees.map(([k, val]) => (
