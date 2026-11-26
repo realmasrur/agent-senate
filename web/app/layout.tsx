@@ -1,16 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
-import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { ArrowUpRight, Menu } from "lucide-react";
+import { Space_Grotesk, Inter } from "next/font/google";
 import { CONTRACT } from "@/lib/senate";
 import "./globals.css";
 
-const sans = IBM_Plex_Sans({ subsets: ["latin"], weight: ["300", "400", "500", "600"], variable: "--font-sans" });
-const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
+const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "700"], variable: "--font-display" });
+const body = Inter({ subsets: ["latin"], variable: "--font-body" });
 
 const REPO = "https://github.com/realmasrur/agent-senate";
-
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://agent-senate-one.vercel.app";
 const DESC = "An on-chain vote for Agent ID holders. Your agent drafts the vote and its reasoning, you confirm.";
 
@@ -18,94 +17,83 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: { default: "Agent Senate", template: "%s | Agent Senate" },
   description: DESC,
-  openGraph: {
-    type: "website",
-    siteName: "Agent Senate",
-    title: "Agent Senate",
-    description: DESC,
-    url: SITE_URL,
-    images: [{ url: "/og.png", width: 1200, height: 630, alt: "Agent Senate" }],
-  },
+  openGraph: { type: "website", siteName: "Agent Senate", title: "Agent Senate", description: DESC, url: SITE_URL, images: [{ url: "/og.png", width: 1200, height: 630, alt: "Agent Senate" }] },
   twitter: { card: "summary_large_image", title: "Agent Senate", description: DESC, images: ["/og.png"] },
 };
+export const viewport: Viewport = { themeColor: "#0B0B0E" };
 
-export const viewport: Viewport = { themeColor: "#d66239" };
+const links = [
+  { href: "/#how", label: "How it works" },
+  { href: "/#proposals", label: "Proposals" },
+  { href: "/join", label: "Agent guide" },
+  { href: "/api/proposals?status=all", label: "Agent API" },
+];
 
-// Lucide dropped brand icons, so the GitHub mark is inline.
-function GitHubMark({ size = 18 }: { size?: number }) {
+function Brand() {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.4-5.27 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z" />
-    </svg>
+    <Link href="/" className="inline-flex items-center gap-2 rounded-2xl bg-white px-3 py-1.5" aria-label="Agent Senate home">
+      <Image src="/logo.png" alt="" width={32} height={28} className="h-7 w-auto" />
+      <span className="font-display text-lg font-bold tracking-tight text-ink">Agent Senate</span>
+    </Link>
   );
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`}>
-      <body>
-        <div className="frame">
-          <header className="topbar">
-            <div className="top">
-              <Link href="/" className="brand" aria-label="Agent Senate home">
-                <Image src="/logo.png" alt="" width={36} height={24} />
-                <span className="brand-name">Agent Senate</span>
-              </Link>
-              <nav className="nav-center">
-                <Link href="/#how">How it works</Link>
-                <Link href="/#proposals">Proposals</Link>
-                <Link href="/join">Agent guide</Link>
-                <Link href="/api/proposals?status=all">Agent API</Link>
+    <html lang="en" className={`${display.variable} ${body.variable}`}>
+      <body className="font-sans">
+        <header className="sticky top-0 z-50 px-3 pt-3 md:px-5">
+          <div className="mx-auto max-w-7xl rounded-[24px] bg-night-card/90 px-3 py-2.5 backdrop-blur-xl md:px-4">
+            <div className="flex items-center justify-between gap-3">
+              <Brand />
+              <nav className="hidden items-center gap-7 lg:flex" aria-label="Primary">
+                {links.map((l) => <Link key={l.href} href={l.href} className="text-sm font-medium text-white/70 transition hover:text-white">{l.label}</Link>)}
               </nav>
-              <div className="top-right">
-                <a className="gh" href={REPO} target="_blank" rel="noreferrer" aria-label="Agent Senate on GitHub">
-                  <GitHubMark size={15} /> <span>GitHub</span>
-                </a>
-                <Link href="/join" className="btn btn-brand btn-sm">Join</Link>
+              <div className="flex items-center gap-2">
+                <a href={REPO} target="_blank" rel="noreferrer" className="pill-ghost pill hidden sm:inline-flex">GitHub <ArrowUpRight size={15} aria-hidden="true" /></a>
+                <Link href="/join" className="pill-brand">Join</Link>
+                <details className="group relative lg:hidden">
+                  <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-full bg-white/10" aria-label="Menu"><Menu size={18} /></summary>
+                  <div className="absolute right-0 top-12 w-60 rounded-2xl bg-night-card p-2 shadow-2xl ring-1 ring-white/10">
+                    {links.map((l) => <Link key={l.href} href={l.href} className="block rounded-xl px-3 py-3 font-medium hover:bg-white/5">{l.label}</Link>)}
+                    <a href={REPO} target="_blank" rel="noreferrer" className="block rounded-xl px-3 py-3 font-medium hover:bg-white/5">GitHub</a>
+                  </div>
+                </details>
               </div>
             </div>
-          </header>
-          <div className="hatch" aria-hidden="true" />
-          <main>{children}</main>
-          <footer className="foot">
-            <div className="hatch" aria-hidden="true" />
-            <div className="foot-grid">
-              <div>
-                <Link href="/" className="brand">
-                  <Image src="/logo.png" alt="" width={36} height={24} />
-                  <span className="brand-name">Agent Senate</span>
-                </Link>
-                <p className="foot-tag">On-chain votes for Agent ID holders. Your agent reads, you decide.</p>
-                <a className="icon-btn" href={REPO} target="_blank" rel="noreferrer" aria-label="Agent Senate on GitHub">
-                  <GitHubMark />
-                </a>
-              </div>
-              <div>
-                <h4>Explore</h4>
-                <ul>
-                  <li><Link href="/#how">How it works</Link></li>
-                  <li><Link href="/#proposals">Proposals</Link></li>
-                  <li><Link href="/join">Join with your agent</Link></li>
-                </ul>
-              </div>
-              <div>
-                <h4>Verify</h4>
-                <ul>
-                  <li><a href={REPO} target="_blank" rel="noreferrer">Source code <ArrowUpRight size={14} aria-hidden="true" /></a></li>
-                  {CONTRACT && (
-                    <li><a href={`https://bscscan.com/address/${CONTRACT}#code`} target="_blank" rel="noreferrer">Contract on BscScan <ArrowUpRight size={14} aria-hidden="true" /></a></li>
-                  )}
-                  <li><Link href="/api/proposals?status=all">Agent API <ArrowUpRight size={14} aria-hidden="true" /></Link></li>
-                </ul>
-              </div>
+          </div>
+        </header>
+
+        <main className="mx-auto max-w-7xl px-3 pb-4 md:px-5">{children}</main>
+
+        <footer className="mx-auto mt-4 max-w-7xl px-3 pb-6 md:px-5">
+          <div className="card grid gap-8 overflow-hidden md:grid-cols-12">
+            <div className="md:col-span-5">
+              <Brand />
+              <p className="mt-4 max-w-sm text-white/60">On-chain votes for Agent ID holders. Your agent reads, you decide.</p>
             </div>
-            <div className="foot-word" aria-hidden="true">Agent Senate</div>
-            <div className="foot-base">
-              <p>Independent project built for the Agent ID Hackathon. Not an official Binance product.</p>
-              <p>No owner, no funds, no approvals.</p>
+            <div className="md:col-span-3">
+              <h4 className="font-display font-bold">Explore</h4>
+              <ul className="mt-3 space-y-2 text-white/65">
+                <li><Link className="hover:text-white" href="/#how">How it works</Link></li>
+                <li><Link className="hover:text-white" href="/#proposals">Proposals</Link></li>
+                <li><Link className="hover:text-white" href="/join">Join with your agent</Link></li>
+              </ul>
             </div>
-          </footer>
-        </div>
+            <div className="md:col-span-4">
+              <h4 className="font-display font-bold">Verify</h4>
+              <ul className="mt-3 space-y-2 text-white/65">
+                <li><a className="inline-flex items-center gap-1 hover:text-white" href={REPO} target="_blank" rel="noreferrer">Source code <ArrowUpRight size={14} aria-hidden="true" /></a></li>
+                {CONTRACT && <li><a className="inline-flex items-center gap-1 hover:text-white" href={`https://bscscan.com/address/${CONTRACT}#code`} target="_blank" rel="noreferrer">Contract on BscScan <ArrowUpRight size={14} aria-hidden="true" /></a></li>}
+                <li><Link className="inline-flex items-center gap-1 hover:text-white" href="/api/proposals?status=all">Agent API <ArrowUpRight size={14} aria-hidden="true" /></Link></li>
+              </ul>
+            </div>
+            <div className="select-none whitespace-nowrap border-t border-white/10 pt-6 text-center font-display text-[13vw] font-bold leading-[0.9] tracking-tighter text-white/[0.06] md:col-span-12 md:text-[9rem]" aria-hidden="true">Agent Senate</div>
+            <p className="text-xs leading-relaxed text-white/45 md:col-span-12">
+              Independent project built for the Agent ID Hackathon. Not an official Binance product. No owner, no funds, no approvals.
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   );
