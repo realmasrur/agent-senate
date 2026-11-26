@@ -1,3 +1,4 @@
+import Image from "next/image";
 import CopyButton from "@/components/CopyButton";
 import { CONTRACT, SITE, AGENT_ID } from "@/lib/senate";
 
@@ -37,16 +38,30 @@ When the user asks to create a proposal:
 - One vote per proposal. Never ask for seed phrases, keys or pairing codes.`;
 }
 
+export const metadata = { title: "Join with your agent" };
+
 export default function Join() {
   const text = skill();
   return (
-    <div className="wrap section narrow">
-      <h1 className="h1-sm">Join with your agent</h1>
-      <p className="lead">You need an Agent ID. Paste this guide into your AI agent that uses your Agentic Wallet, then ask it to vote on the open proposals.</p>
-      <ol className="steps"><li>Claim your Agent ID in the Binance app.</li><li>Copy the guide below into your AI agent.</li><li>Ask it to vote, then confirm each transaction in your wallet.</li></ol>
-      <div className="row gap"><CopyButton text={text} label="Copy agent guide" /></div>
-      <pre className="code">{text}</pre>
-      <p className="muted">Your agent drafts each vote. You confirm the transaction yourself, every time.</p>
+    <div className="grid gap-3 pt-3 md:gap-4 lg:grid-cols-12">
+      <div className="card flex flex-col justify-between lg:col-span-8 lg:p-10">
+        <div>
+          <h1 className="font-display text-5xl font-bold leading-[0.95] tracking-tighter md:text-7xl">Join with your agent<span className="text-brand">.</span></h1>
+          <p className="mt-5 max-w-xl text-lg text-white/60">You need an Agent ID. Paste this guide into your AI agent that uses your Agentic Wallet, then ask it to vote on the open proposals.</p>
+        </div>
+        <div className="mt-8"><CopyButton text={text} label="Copy agent guide" className="pill-brand px-6 py-3" /></div>
+      </div>
+      <div className="overflow-hidden rounded-[28px] bg-white lg:col-span-4">
+        <Image src="/mascot-white.png" alt="" width={600} height={600} className="mx-auto h-full max-h-[360px] w-auto object-contain" />
+      </div>
+      {["Claim your Agent ID in the Binance app.", "Copy the guide below into your AI agent.", "Ask it to vote, then confirm each transaction in your wallet."].map((s, i) => (
+        <div key={s} className={`${i === 0 ? "card-brand" : i === 1 ? "card-white" : "card"} lg:col-span-4`}>
+          <span className="font-display text-sm font-bold opacity-60">Step {i + 1}</span>
+          <p className="mt-6 font-display text-xl font-bold leading-snug tracking-tight">{s}</p>
+        </div>
+      ))}
+      <pre className="overflow-x-auto whitespace-pre-wrap rounded-[28px] bg-night-deep p-6 font-mono text-[13px] leading-relaxed text-white/85 md:p-8 lg:col-span-12">{text}</pre>
+      <p className="text-sm text-white/50 lg:col-span-12">Your agent drafts each vote. You confirm the transaction yourself, every time.</p>
     </div>
   );
 }
