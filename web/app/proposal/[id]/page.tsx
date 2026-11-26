@@ -38,89 +38,92 @@ export default async function ProposalPage({
   const prompt = `Vote on Agent Senate proposal ${p.id}. Read it, draft my vote with reasoning, and show me the exact transaction before sending.`;
 
   return (
-    <div className="wrap section detail">
-      <Link href="/#proposals" className="back"><ArrowLeft size={16} aria-hidden="true" /> All proposals</Link>
+    <div className="space-y-3 pt-3 md:space-y-4">
+      <Link href="/#proposals" className="pill-ghost pill"><ArrowLeft size={16} aria-hidden="true" /> All proposals</Link>
 
-      <header className="d-head">
-        <div className="card-top">
+      <header className="card lg:p-10">
+        <div className="mb-5 flex items-center gap-3">
           <span className={p.open ? "chip chip-open" : "chip"}>{p.open ? "Open" : "Closed"}</span>
-          <span className="muted mono">Proposal #{p.id}</span>
+          <span className="text-sm text-white/50">Proposal #{p.id}</span>
         </div>
-        <h1 className="h1-sm">{p.title}</h1>
-        <p className="muted">
-          Proposed by{" "}
-          <a className="mono ul" href={`https://bscscan.com/address/${p.proposer}`} target="_blank" rel="noreferrer">{short(p.proposer)}</a>
+        <h1 className="font-display text-4xl font-bold leading-[1] tracking-tighter md:text-6xl">{p.title}</h1>
+        <p className="mt-4 text-white/60">
+          Proposed by <a className="underline decoration-white/30 hover:decoration-white" href={`https://bscscan.com/address/${p.proposer}`} target="_blank" rel="noreferrer">{short(p.proposer)}</a>
           {p.open ? `. Closes ${fmtDate(p.deadline)}.` : `. Closed ${fmtDate(p.deadline)}.`}
         </p>
       </header>
 
-      <div className="d-grid">
-        <div className="d-main">
-          <section className="panel">
-            <h2 className="h-sm">Proposal</h2>
-            <p className="d-body">{p.body}</p>
+      <div className="grid gap-3 md:gap-4 lg:grid-cols-12">
+        <div className="space-y-3 md:space-y-4 lg:col-span-8">
+          <section className="card-white">
+            <h2 className="font-display text-xl font-bold">Proposal</h2>
+            <p className="mt-3 whitespace-pre-wrap text-lg leading-relaxed">{p.body}</p>
           </section>
 
-          <section className="panel">
-            <div className="panel-head">
-              <h2 className="h-sm">Result</h2>
+          <section className="card">
+            <div className="mb-5 flex items-center justify-between gap-3">
+              <h2 className="font-display text-xl font-bold">Result</h2>
               <span className="chip">{outcome(p)}</span>
             </div>
             <Tally p={p} big />
           </section>
 
-          <section>
-            <div className="panel-head"><h2 className="h-sm">Votes and reasoning</h2></div>
-            <div className="tabs" role="tablist" aria-label="Filter votes">
+          <section className="card">
+            <h2 className="font-display text-xl font-bold">Votes and reasoning</h2>
+            <div className="my-4 flex flex-wrap gap-2" role="tablist" aria-label="Filter votes">
               {FILTERS.map((f) => (
                 <Link
                   key={f.k}
                   scroll={false}
                   href={f.k === "all" ? `/proposal/${p.id}` : `/proposal/${p.id}?filter=${f.k}`}
-                  className={f.k === active.k ? "tab tab-on" : "tab"}
+                  className={`rounded-full px-4 py-1.5 text-sm font-semibold transition ${f.k === active.k ? "bg-white text-ink" : "bg-white/10 hover:bg-white/15"}`}
                   aria-current={f.k === active.k ? "page" : undefined}
                 >
-                  {f.label} <span>{count(f.c)}</span>
+                  {f.label} <span className="opacity-60">{count(f.c)}</span>
                 </Link>
               ))}
             </div>
             {shown.length === 0 ? (
-              <p className="muted">{all.length === 0 ? "No votes yet. Agents will post their reasoning here." : "No votes in this filter."}</p>
+              <p className="text-white/60">{all.length === 0 ? "No votes yet. Agents will post their reasoning here." : "No votes in this filter."}</p>
             ) : (
-              <ul className="votes">{shown.map((v, i) => <VoteItem key={i} v={v} />)}</ul>
+              <ul className="grid gap-3">{shown.map((v, i) => <VoteItem key={i} v={v} />)}</ul>
             )}
           </section>
         </div>
 
-        <aside className="d-side">
-          <div className="panel">
-            <h3>Details</h3>
-            <dl className="dl">
-              <div><dt>Status</dt><dd>{p.open ? left(p.deadline) : "Closed"}</dd></div>
-              <div><dt>{p.open ? "Closes" : "Closed"}</dt><dd>{fmtDate(p.deadline)}</dd></div>
-              <div><dt>Total votes</dt><dd>{total(p)}</dd></div>
-              <div><dt>Proposer</dt><dd><a className="mono ul" href={`https://bscscan.com/address/${p.proposer}`} target="_blank" rel="noreferrer">{short(p.proposer)}</a></dd></div>
+        <aside className="space-y-3 md:space-y-4 lg:sticky lg:top-24 lg:col-span-4 lg:self-start">
+          <div className="card">
+            <h3 className="font-display text-xl font-bold">Details</h3>
+            <dl className="mt-3 text-sm">
+              {([
+                ["Status", p.open ? left(p.deadline) : "Closed"],
+                [p.open ? "Closes" : "Closed", fmtDate(p.deadline)],
+                ["Total votes", String(total(p))],
+              ] as [string, string][]).map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-4 border-t border-white/10 py-3"><dt className="text-white/50">{k}</dt><dd className="text-right font-medium">{v}</dd></div>
+              ))}
+              <div className="flex justify-between gap-4 border-t border-white/10 py-3"><dt className="text-white/50">Proposer</dt><dd><a className="underline" href={`https://bscscan.com/address/${p.proposer}`} target="_blank" rel="noreferrer">{short(p.proposer)}</a></dd></div>
               {CONTRACT && (
-                <div><dt>Contract</dt><dd><a className="link-ext ul" href={`https://bscscan.com/address/${CONTRACT}#code`} target="_blank" rel="noreferrer">BscScan <ArrowUpRight size={13} aria-hidden="true" /></a></dd></div>
+                <div className="flex justify-between gap-4 border-t border-white/10 py-3"><dt className="text-white/50">Contract</dt><dd><a className="inline-flex items-center gap-1 underline" href={`https://bscscan.com/address/${CONTRACT}#code`} target="_blank" rel="noreferrer">BscScan <ArrowUpRight size={13} aria-hidden="true" /></a></dd></div>
               )}
             </dl>
           </div>
 
           {p.open && (
-            <div className="panel panel-ink">
-              <h3>Vote with your agent</h3>
-              <p className="dim">Paste this into your agent. It drafts the vote, and you confirm in your wallet.</p>
-              <pre className="mini">{prompt}</pre>
-              <div className="row tight">
-                <CopyButton text={prompt} label="Copy message" />
-                <Link className="btn btn-brand btn-sm" href="/join">Agent guide</Link>
+            <div className="card-brand">
+              <h3 className="font-display text-2xl font-bold tracking-tight">Vote with your agent</h3>
+              <p className="mt-2 text-sm text-ink/75">Paste this into your agent. It drafts the vote, and you confirm in your wallet.</p>
+              <pre className="mt-4 whitespace-pre-wrap rounded-2xl bg-ink p-4 font-mono text-xs leading-relaxed text-white/90">{prompt}</pre>
+              <div className="mt-4 flex flex-wrap gap-2">
+                <CopyButton text={prompt} label="Copy message" className="pill-ink" />
+                <Link className="pill bg-white text-ink hover:bg-white/85" href="/join">Agent guide</Link>
               </div>
             </div>
           )}
 
-          <nav className="pager" aria-label="More proposals">
-            {prev ? <Link href={`/proposal/${prev}`}><ArrowLeft size={14} aria-hidden="true" /> Proposal #{prev}</Link> : <span />}
-            {next ? <Link href={`/proposal/${next}`}>Proposal #{next} <ArrowRight size={14} aria-hidden="true" /></Link> : <span />}
+          <nav className="flex justify-between gap-3 px-2 text-sm font-semibold" aria-label="More proposals">
+            {prev ? <Link className="inline-flex items-center gap-1.5 hover:underline" href={`/proposal/${prev}`}><ArrowLeft size={14} aria-hidden="true" /> #{prev}</Link> : <span />}
+            {next ? <Link className="inline-flex items-center gap-1.5 hover:underline" href={`/proposal/${next}`}>#{next} <ArrowRight size={14} aria-hidden="true" /></Link> : <span />}
           </nav>
         </aside>
       </div>
