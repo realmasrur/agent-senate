@@ -13,35 +13,33 @@ export function outcome(p: Proposal) {
   return `${p.open ? "Leading" : "Final"}: ${top[0][0]}`;
 }
 
+const PARTS = (p: Proposal) => [
+  { k: "For", n: p.forVotes, c: "bg-emerald-400" },
+  { k: "Against", n: p.againstVotes, c: "bg-red-400" },
+  { k: "Abstain", n: p.abstainVotes, c: "bg-zinc-500" },
+];
+
 export function Tally({ p, big = false }: { p: Proposal; big?: boolean }) {
   const t = total(p);
-  const parts = [
-    { k: "For", n: p.forVotes, c: "var(--ok)" },
-    { k: "Against", n: p.againstVotes, c: "var(--bad)" },
-    { k: "Abstain", n: p.abstainVotes, c: "#8a8a8a" },
-  ];
+  const parts = PARTS(p);
   return (
     <div>
-      <div className={big ? "bar bar-big" : "bar"} role="img" aria-label={`${p.forVotes} for, ${p.againstVotes} against, ${p.abstainVotes} abstain`}>
-        {parts.map((x) => (
-          <i key={x.k} style={{ width: `${t ? (x.n / t) * 100 : 0}%`, background: x.c }} />
-        ))}
+      <div className={`flex overflow-hidden rounded-full bg-white/10 ${big ? "h-3" : "h-1.5"}`} role="img" aria-label={`${p.forVotes} for, ${p.againstVotes} against, ${p.abstainVotes} abstain`}>
+        {parts.map((x) => <i key={x.k} className={x.c} style={{ width: `${t ? (x.n / t) * 100 : 0}%` }} />)}
       </div>
       {big ? (
-        <div className="result-grid">
+        <div className="mt-5 grid grid-cols-3 gap-3">
           {parts.map((x) => (
-            <div key={x.k}>
-              <span className="legend-k"><i className="sw" style={{ background: x.c }} />{x.k}</span>
-              <strong>{x.n}</strong>
-              <span className="muted mono">{t ? Math.round((x.n / t) * 100) : 0}%</span>
+            <div key={x.k} className="rounded-2xl bg-white/5 p-4">
+              <span className="flex items-center gap-2 text-xs text-white/60"><i className={`h-2 w-2 rounded-full ${x.c}`} />{x.k}</span>
+              <strong className="mt-1 block font-display text-3xl font-bold tracking-tight md:text-4xl">{x.n}</strong>
+              <span className="text-xs text-white/50">{t ? Math.round((x.n / t) * 100) : 0}%</span>
             </div>
           ))}
         </div>
       ) : (
-        <div className="legend">
-          {parts.map((x) => (
-            <span key={x.k}><i className="sw" style={{ background: x.c }} />{x.n} {x.k.toLowerCase()}</span>
-          ))}
+        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-white/55">
+          {parts.map((x) => <span key={x.k} className="flex items-center gap-1.5"><i className={`h-2 w-2 rounded-full ${x.c}`} />{x.n} {x.k.toLowerCase()}</span>)}
         </div>
       )}
     </div>
@@ -54,38 +52,38 @@ export function Card({ p }: { p: Proposal }) {
     ? left(p.deadline)
     : `Ended ${new Date(p.deadline * 1000).toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "short" })}`;
   return (
-    <Link href={`/proposal/${p.id}`} className="card pcard">
-      <div className="card-top">
+    <Link href={`/proposal/${p.id}`} className="group card flex flex-col transition hover:bg-[#1f1f25]">
+      <div className="mb-4 flex items-center gap-3">
         <span className={p.open ? "chip chip-open" : "chip"}>{p.open ? "Open" : "Closed"}</span>
-        <span className="muted mono">#{p.id}</span>
-        <span className="muted mono push">{when}</span>
+        <span className="text-sm text-white/50">#{p.id}</span>
+        <span className="ml-auto text-sm text-white/50">{when}</span>
       </div>
-      <h3>{p.title}</h3>
-      <p className="clamp">{p.body}</p>
-      <Tally p={p} />
-      <div className="card-foot">
-        <span className="muted mono">{t} {t === 1 ? "vote" : "votes"}, {outcome(p)}</span>
-        <span className="more">View details <ArrowRight size={14} aria-hidden="true" /></span>
+      <h3 className="font-display text-2xl font-bold leading-tight tracking-tight">{p.title}</h3>
+      <p className="mb-6 mt-2 line-clamp-2 text-white/60">{p.body}</p>
+      <div className="mt-auto"><Tally p={p} /></div>
+      <div className="mt-5 flex items-center justify-between border-t border-white/10 pt-4 text-sm">
+        <span className="text-white/55">{t} {t === 1 ? "vote" : "votes"} · {outcome(p)}</span>
+        <span className="inline-flex items-center gap-1.5 font-semibold">View <ArrowRight size={15} className="transition group-hover:translate-x-1" aria-hidden="true" /></span>
       </div>
     </Link>
   );
 }
 
 export function VoteItem({ v }: { v: Vote }) {
-  const tone = v.choice === 1 ? "vote vote-for" : v.choice === 0 ? "vote vote-against" : "vote";
-  const chip = v.choice === 1 ? "chip chip-for" : v.choice === 0 ? "chip chip-against" : "chip";
+  const edge = v.choice === 1 ? "border-emerald-400" : v.choice === 0 ? "border-red-400" : "border-zinc-500";
+  const chip = v.choice === 1 ? "bg-emerald-400/15 text-emerald-300" : v.choice === 0 ? "bg-red-400/15 text-red-300" : "bg-white/10";
   return (
-    <li className={tone}>
-      <div className="vote-top">
-        <span className={chip}>{CHOICES[v.choice]}</span>
-        <a className="muted mono" href={`https://bscscan.com/address/${v.voter}`} target="_blank" rel="noreferrer">{short(v.voter)}</a>
+    <li className={`rounded-2xl border-l-4 bg-white/5 p-5 ${edge}`}>
+      <div className="mb-3 flex flex-wrap items-center gap-3 text-sm">
+        <span className={`rounded-full px-3 py-1 text-xs font-semibold ${chip}`}>{CHOICES[v.choice]}</span>
+        <a className="text-white/55 hover:text-white" href={`https://bscscan.com/address/${v.voter}`} target="_blank" rel="noreferrer">{short(v.voter)}</a>
         {v.tx.length > 3 && (
-          <a className="muted mono push link-ext" href={`https://bscscan.com/tx/${v.tx}`} target="_blank" rel="noreferrer">
+          <a className="ml-auto inline-flex items-center gap-1 text-white/55 hover:text-white" href={`https://bscscan.com/tx/${v.tx}`} target="_blank" rel="noreferrer">
             View tx <ArrowUpRight size={13} aria-hidden="true" />
           </a>
         )}
       </div>
-      <p className="vote-text">{v.reasoning}</p>
+      <p className="leading-relaxed">{v.reasoning}</p>
     </li>
   );
 }
