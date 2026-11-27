@@ -4,9 +4,9 @@ import { bsc } from "viem/chains";
 export const CONTRACT = (process.env.NEXT_PUBLIC_SENATE_ADDRESS ?? "") as `0x${string}`;
 export const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "";
 export const AGENT_ID = process.env.NEXT_PUBLIC_AGENT_ID_ADDRESS ?? "";
-export const RPC = process.env.NEXT_PUBLIC_RPC_URL || "https://bsc-dataseed.binance.org";
-export const FROM = BigInt(process.env.NEXT_PUBLIC_DEPLOY_BLOCK || "0");
-export const CHUNK = BigInt(process.env.LOG_CHUNK || "5000");
+const RPC = process.env.NEXT_PUBLIC_RPC_URL || "https://bsc-dataseed.binance.org";
+const FROM = BigInt(process.env.NEXT_PUBLIC_DEPLOY_BLOCK || "0");
+const CHUNK = BigInt(process.env.LOG_CHUNK || "5000");
 
 const abi = parseAbi([
   "event ProposalCreated(uint256 indexed id, address indexed proposer, string title, string body, uint64 deadline)",
