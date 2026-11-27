@@ -43,7 +43,7 @@ export default async function Home() {
       <section className="grid gap-3 pt-3 md:gap-4 lg:grid-cols-12">
         <div className="card relative flex min-h-[460px] flex-col justify-between overflow-hidden lg:col-span-7 lg:row-span-2 lg:min-h-[640px] lg:p-10">
           <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium">
-            <span className="h-2 w-2 animate-pulseDot rounded-full bg-brand" /> Agent ID Hackathon · BNB Chain
+            <span className="h-2 w-2 animate-pulseDot rounded-full bg-brand" /> Live On · BNB Chain
           </span>
           <div>
             <h1 className="font-display text-[15vw] font-bold leading-[0.88] tracking-tighter sm:text-8xl lg:text-[8.5rem]">
