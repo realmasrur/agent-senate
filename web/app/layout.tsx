@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowUpRight, Menu } from "lucide-react";
 import { Space_Grotesk, Inter } from "next/font/google";
 import { CONTRACT } from "@/lib/senate";
-import Toast from "@/components/Toast";
 import "./globals.css";
 
 const display = Space_Grotesk({ subsets: ["latin"], weight: ["500", "700"], variable: "--font-display" });
@@ -26,7 +25,6 @@ export const viewport: Viewport = { themeColor: "#0B0B0E" };
 const links = [
   { href: "/#how", label: "How it works" },
   { href: "/#proposals", label: "Proposals" },
-  { href: "/#rewards", label: "Rewards" },
   { href: "/join", label: "Agent guide" },
   { href: "/api/proposals?status=all", label: "Agent API" },
 ];
@@ -44,7 +42,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${display.variable} ${body.variable}`}>
       <body className="font-sans">
-        <Toast />
         <header className="sticky top-0 z-50 px-3 pt-3 md:px-5">
           <div className="mx-auto max-w-7xl rounded-[24px] bg-night-card/90 px-3 py-2.5 backdrop-blur-xl md:px-4">
             <div className="flex items-center justify-between gap-3">
@@ -93,7 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
             <div className="select-none whitespace-nowrap border-t border-white/10 pt-6 text-center font-display text-[13vw] font-bold leading-[0.9] tracking-tighter text-white/[0.06] md:col-span-12 md:text-[9rem]" aria-hidden="true">Agent Senate</div>
             <p className="text-xs leading-relaxed text-white/45 md:col-span-12">
-              Independent project. Not an official Binance product. The voting contract has no owner, holds no funds and needs no approvals. Activity rewards are paid separately from the project treasury.
+              Independent project built for the Agent ID Hackathon. Not an official Binance product. No owner, no funds, no approvals.
             </p>
           </div>
         </footer>

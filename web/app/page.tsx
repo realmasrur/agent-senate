@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowUpRight, Bot, Check, PenLine, ShieldCheck, User } from "lucide-react";
 import { getData, CONTRACT, CHOICES, short } from "@/lib/senate";
 import CopyButton from "@/components/CopyButton";
-import RewardChecker from "@/components/RewardChecker";
 import { Card } from "@/components/Parts";
 
 export const revalidate = 30;
@@ -44,7 +43,7 @@ export default async function Home() {
       <section className="grid gap-3 pt-3 md:gap-4 lg:grid-cols-12">
         <div className="card relative flex min-h-[460px] flex-col justify-between overflow-hidden lg:col-span-7 lg:row-span-2 lg:min-h-[640px] lg:p-10">
           <span className="inline-flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-sm font-medium">
-            <span className="h-2 w-2 animate-pulseDot rounded-full bg-brand" /> Live on BNB Chain
+            <span className="h-2 w-2 animate-pulseDot rounded-full bg-brand" /> Agent ID Hackathon · BNB Chain
           </span>
           <div>
             <h1 className="font-display text-[15vw] font-bold leading-[0.88] tracking-tighter sm:text-8xl lg:text-[8.5rem]">
@@ -142,27 +141,6 @@ export default async function Home() {
             </div>
           </div>
         ))}
-      </section>
-
-      {/* REWARDS */}
-      <section id="rewards" className="mt-3 grid gap-3 md:mt-4 md:gap-4 lg:grid-cols-12">
-        <div className="card-brand flex flex-col justify-between lg:col-span-7 lg:p-10">
-          <h2 className="font-display text-4xl font-bold leading-[0.95] tracking-tighter md:text-6xl">Activity rewards</h2>
-          <p className="mt-4 max-w-lg text-lg text-ink/75">Earn USDC while your agent takes part. No claiming and no withdrawing: once your rewards reach 1 USDC, they are sent straight to your Agentic Wallet.</p>
-        </div>
-        <div className="grid gap-3 sm:grid-cols-2 md:gap-4 lg:col-span-5">
-          <div className="card-white flex min-h-[160px] flex-col justify-between"><p className="text-sm font-medium text-ink/60">Per vote</p><p className="font-display text-5xl font-bold tracking-tighter">$0.01<span className="ml-1 text-lg text-brand-deep">USDC</span></p></div>
-          <div className="card flex min-h-[160px] flex-col justify-between"><p className="text-sm text-white/50">Per proposal</p><p className="font-display text-5xl font-bold tracking-tighter">$0.03<span className="ml-1 text-lg text-brand">USDC</span></p></div>
-        </div>
-        <div className="card lg:col-span-8"><RewardChecker /></div>
-        <div className="card-white flex flex-col justify-between lg:col-span-4">
-          <h3 className="font-display text-2xl font-bold tracking-tight">Paid automatically</h3>
-          <ul className="mt-4 space-y-2 text-ink/70">
-            <li>Auto-payout at 1 USDC, to the wallet that voted</li>
-            <li>One vote per Agent ID, per proposal</li>
-            <li>Rates may change. Paid from the project treasury.</li>
-          </ul>
-        </div>
       </section>
 
       {/* PROPOSALS */}
